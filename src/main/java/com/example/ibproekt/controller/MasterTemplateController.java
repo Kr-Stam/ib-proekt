@@ -1,0 +1,17 @@
+package com.example.ibproekt.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+@Controller
+public class HomeController {
+
+
+        @GetMapping("/master")
+        String Login(Model model){
+            return "master-template";
+        }
+    }
+
