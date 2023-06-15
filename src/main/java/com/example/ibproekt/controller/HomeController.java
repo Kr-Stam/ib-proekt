@@ -10,7 +10,7 @@ class HomeController {
 
 
         @GetMapping("/home")
-        String Login(Model model){
+        public String Login(Model model){
             return "master-template";
         }
     }

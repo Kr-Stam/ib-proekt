@@ -1,8 +1,8 @@
 package com.example.ibproekt.service;
 
-import com.example.ibproekt.controller.auth.AuthenticationRequest;
-import com.example.ibproekt.controller.auth.AuthenticationResponse;
-import com.example.ibproekt.controller.auth.RegisterRequest;
+import com.example.ibproekt.security.api.AuthenticationRequest;
+import com.example.ibproekt.security.api.AuthenticationResponse;
+import com.example.ibproekt.controller.user.RegisterRequest;
 import com.example.ibproekt.entity.User;
 import com.example.ibproekt.repository.UserRepository;
 import com.example.ibproekt.security.Role;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -55,4 +55,8 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+//    public String signUpUser(String email, String password){
+//        userRepository.findByEmail(user.getEmail());
+//    }
 }

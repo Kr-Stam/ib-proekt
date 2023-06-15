@@ -1,4 +1,4 @@
-package com.example.ibproekt.controller.auth;
+package com.example.ibproekt.security.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

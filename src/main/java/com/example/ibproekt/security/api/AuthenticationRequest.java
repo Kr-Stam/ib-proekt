@@ -1,4 +1,4 @@
-package com.example.ibproekt.controller.auth;
+package com.example.ibproekt.security.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
-    private String _username;
+public class AuthenticationRequest {
     private String email;
     private String password;
 }
