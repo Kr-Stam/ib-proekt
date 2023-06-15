@@ -11,6 +11,9 @@
 
 </head>
 <body>
+
+<header th:replace="fragments/header"/>
+
 <div class="container-categories" style="background-color: #d1d1d1">
     <h2 style="text-align: center">Info about our request</h2>
     <div th:text="${ipAddress}"></div>
@@ -47,5 +50,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+<header th:replace="fragments/footer"/>
 </body>
 </html>

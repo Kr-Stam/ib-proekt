@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-public class HomeController {
+class HomeController {
 
 
-        @GetMapping("/master")
+        @GetMapping("/home")
         String Login(Model model){
             return "master-template";
         }
