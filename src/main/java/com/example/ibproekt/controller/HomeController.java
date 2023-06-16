@@ -13,11 +13,11 @@ class HomeController {
 
         @GetMapping("/home")
         public String home(Model model){
-            return "home";
+            return "master-template";
         }
         @GetMapping("/")
         public String blank(Model model){
-            return "home";
+            return "master-template";
         }
     }
 

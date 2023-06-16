@@ -28,8 +28,9 @@ public class SecurityConfiguration  {
                         authorizeHttpRequests
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                                 .requestMatchers("/home").permitAll()
-                                .requestMatchers("/home/**", "/products").hasRole("USER")
-                                .requestMatchers("/categories/**", "/manufacturers/**", "/products/**").hasRole("ADMIN")
+                                .requestMatchers("/home/**").hasRole("USER")
+                                .requestMatchers("/categories/**", "/manufacturers/**").hasRole("ADMIN")
+                                .requestMatchers("/products/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers("/endpoint").permitAll()
                                 .requestMatchers("/register","/login").anonymous()
                                 .anyRequest().authenticated()

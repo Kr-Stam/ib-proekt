@@ -8,7 +8,7 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
-    void deleteProductById(long id);
+    void deleteById(long id);
 
     Product saveProduct(Product product);
 }

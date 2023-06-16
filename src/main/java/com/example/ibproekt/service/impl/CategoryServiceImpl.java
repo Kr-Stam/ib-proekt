@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -24,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void saveCategory(Category category) {
+    public void save(Category category) {
         categoryRepository.save(category);
     }
 
@@ -33,7 +34,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public Category findById(long id) {
+    @Override
+    public Optional<Category> findById(long id) {
         return categoryRepository.findById(id);
     }
 }

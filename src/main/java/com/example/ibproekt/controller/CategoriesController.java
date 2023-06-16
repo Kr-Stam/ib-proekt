@@ -1,13 +1,9 @@
 package com.example.ibproekt.controller;
 
 import com.example.ibproekt.entity.Category;
-import com.example.ibproekt.service.ProductService;
 import com.example.ibproekt.service.impl.CategoryServiceImpl;
 import com.example.ibproekt.service.impl.ProductServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +20,8 @@ public class CategoriesController {
     @GetMapping("/categories")
     public String getAllCategories(Model model){
         model.addAttribute("categories", categoryService.getAllCategories());
-        return "categories";
-    }
-
-    @GetMapping("/categories/")
-    public String createCategory(Model model){
         Category category = new Category();
-        model.addAttribute("category", category);
+        model.addAttribute("tmpCategory", category);
         return "categories";
     }
 
@@ -44,20 +35,22 @@ public class CategoriesController {
         //mozebi ima podobar nachin, ama ispagja bojle e samo voopsto da ne se koristi jpa
         //i direktno da se koristi baza
 
-        productService.getAllProducts().stream()
-                .filter(product -> product.getCategory().equals(categoryService.findById(id)))
-                .forEach(product -> {
-                    productService.deleteProductById(product.getId());
-                });
+        var result = categoryService.findById(id);
+        if(result.isPresent()) {
+            Category category = result.get();
 
-        categoryService.deleteCategoryById(id);
+            productService.getAllProducts().stream()
+                    .filter(product -> product.getCategory().equals((category)))
+                    .forEach(product -> productService.deleteById(product.getId()));
 
+            categoryService.deleteCategoryById(id);
+        }
         return "redirect:/categories";
     }
 
     @PostMapping(value = "/categories")
     public String saveCategory(@ModelAttribute("category")Category category){
-        categoryService.saveCategory(category);
+        categoryService.save(category);
         return "redirect:/categories";
     }
 }
