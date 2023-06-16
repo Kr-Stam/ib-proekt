@@ -7,7 +7,12 @@
 
 <div class="container" xmlns:th="http://www.thymeleaf.org" style="box-shadow: 0 0 54px rgba(59, 39, 16, 2.5); padding-bottom: 10px">
   <form class="form-signin mt-xl-5" method="post" th:object="${user}" th:action="@{/register}">
-    <h2 class="form-signin-heading">Sign in</h2>
+    <h2 class="form-signin-heading">Sign up</h2>
+
+    <div class="alert alert-danger" role="alert" th:if="${registerError}">
+      Email already taken
+    </div>
+
     <p>
       <label for="username" class="sr-only">Username</label>
       <input type="text" id="username" name="username" class="form-control" placeholder="Username" required=""

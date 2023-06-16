@@ -2,6 +2,8 @@ package com.example.ibproekt.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "product")
@@ -25,14 +27,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "product_category_id")
     private Category category;
-
-//    public Product(long id, String name, double price, String manufacturer, String category) {
-//        this.id = id;
-//        this.name = name;
-//        this.price = price;
-//        this.manufacturer = new Manufacturer(manufacturer);
-//        this.category = new Category(category);
-//    }
 
     public long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.example.ibproekt.security.config;
 
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration  {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
@@ -23,23 +23,31 @@ public class SecurityConfiguration  {
         http
                 .csrf((csrf) -> {
                     csrf.disable();
-                }).authorizeHttpRequests((authorizeHttpRequests) ->
+                })
+                .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/**")  //authorize auth controller(all for now)
-                                .permitAll()
-                                .anyRequest().authenticated())
-                .sessionManagement((sessionManagement) -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).authenticationProvider(authenticationProvider)
-                .formLogin(formLogin -> formLogin.loginPage("/login.html")
+                                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                                .requestMatchers("/home").permitAll()
+                                .requestMatchers("/home/**", "/products").hasRole("USER")
+                                .requestMatchers("/categories/**", "/manufacturers/**", "/products/**").hasRole("ADMIN")
+                                .requestMatchers("/endpoint").permitAll()
+                                .requestMatchers("/register","/login").anonymous()
+                                .anyRequest().authenticated()
+                )
+                .authenticationProvider(authenticationProvider)
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
-                        .defaultSuccessUrl("/home.html")
+                        .defaultSuccessUrl("/home", true)
+                        .failureForwardUrl("/login_failure")
+                        .failureUrl("/login?error")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/perform_logout")
                         .deleteCookies("JSESSIONID")
-                )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/home")
+                );
 
         return http.build();
     }

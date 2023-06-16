@@ -15,27 +15,32 @@
 <header th:replace="~{fragments/header}"/>
 
 <div class="container-categories" style="background-color: #d1d1d1">
-    <h2 style="text-align: center">Info about our request</h2>
-    <div th:text="${ipAddress}"></div>
-    <div th:text="${clientAgent}"></div>
-
-    <th:block th:if="${session.user!=null}">
-        <h2>Info about user</h2>
-        <div th:text="${session.user.username}"></div>
-        <div th:text="${session.user.name}"></div>
-        <div th:text="${session.user.surname}"></div>
-        <div>
-            <a href="/logout">Logout</a>
-        </div>
-    </th:block>
 
     <h2>Categories</h2>
-    <ul class="list-group">
-        <li class="list-group-item" th:each="category: ${categories}">
+    <table class="table">
+<!--        <thead>-->
+<!--        <th>Category(description)</th>-->
+<!--        </thead>-->
+        <tbody>
+        <tr th:each="category: ${categories}">
+            <td>
             <span th:text="${category.name}"></span>
             <span class="text-muted" th:text="' (' + ${category.description} + ')'"></span>
-        </li>
-    </ul>
+            </td>
+            <td>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <form th:action="@{/categories/delete/{id} (id=${category.getId()})}"
+                      th:method="GET">
+                    <button type="submit"
+                            class="btn btn-sm btn-danger delete-product">
+                        <i class="fa fa-trash">DELETE</i>
+                    </button>
+                </form>
+            </th:block>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     <h3>Add New Category</h3>
     <form th:action="@{/categories}" th:method="POST">

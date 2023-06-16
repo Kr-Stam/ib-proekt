@@ -6,6 +6,7 @@ import com.example.ibproekt.service.ManufacturerService;
 import com.example.ibproekt.service.impl.CategoryServiceImpl;
 import com.example.ibproekt.service.impl.ManufacturerServiceImpl;
 import com.example.ibproekt.service.impl.ProductServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -14,22 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller()
+@Controller
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductServiceImpl productService;
-
-    @Autowired
-    private CategoryServiceImpl categoryService;
-
-    @Autowired
-    private ManufacturerServiceImpl manufacturerService;
-
-    @Autowired
-    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService) {
-        this.productService = productService;
-    }
+    private final ProductServiceImpl productService;
+    private final CategoryServiceImpl categoryService;
+    private final ManufacturerServiceImpl manufacturerService;
 
     @GetMapping(path = "/products")
     public String getAllProducts(Model model){

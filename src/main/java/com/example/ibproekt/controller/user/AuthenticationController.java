@@ -1,50 +1,69 @@
 package com.example.ibproekt.controller.user;
 
 
-import com.example.ibproekt.entity.User;
 import com.example.ibproekt.entity.dto.UserDto;
-import com.example.ibproekt.security.api.AuthenticationRequest;
-import com.example.ibproekt.security.api.AuthenticationResponse;
-import com.example.ibproekt.service.AuthService;
+import com.example.ibproekt.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 //@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthService authService;
+    private final UserService userService;
 
     @PostMapping("/register")
     public String register(
             @ModelAttribute("user") UserDto user
             ){
-        authService.register(RegisterRequest.builder()
-                        ._username(user.getUsername())
-                        .email(user.getEmail())
-                        .password(user.getPassword())
-                .build());
+        try {
+            userService.register(RegisterRequest.builder()
+                    ._username(user.getUsername())
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .build());
 
-        return "redirect:/home";
+            return "redirect:/home";
+        }catch (Exception e){
+            return "redirect:/register?error";
+        }
     }
 
     @GetMapping("/register")
-    public String getRegisterPage(){
+    public String getRegisterPage(
+            Model model,
+            @RequestParam("error") Optional<Object> error
+    ){
+        if(error.isPresent()){
+            model.addAttribute("registerError", true);
+        }
         return "register";
     }
-
-//    @PostMapping("/authenticate")
-//    public ResponseEntity<AuthenticationResponse> authenticate(
-//            @RequestBody AuthenticationRequest request
-//    ){
-//        return ResponseEntity.ok(authService.authenticate(request));
-//    }
-
     @GetMapping("/login")
-    public String login(){
+    public String login(
+            Model model,
+            @RequestParam("error") Optional<Object> error
+    ){
+        if(error.isPresent()){
+            model.addAttribute("loginError", true);
+        }
         return "login";
+    }
+
+    @PostMapping("/login_failure")
+    public String loginFailure(Model model){
+
+        return "redirect:/login?error";
+    }
+
+
+    @GetMapping("/logout")
+    public String logout(Model model){
+        return "redirect:/home";
     }
 }
